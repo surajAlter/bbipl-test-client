@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-const serverURL = process.env.REACT_APP_SERVER_URL;
+const serverURL = process.env.REACT_APP_API_URL;
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ function Login() {
       }
 
       try {
-        const url = `${serverURL}/api/user-login`;
+        const url = `${serverURL}/user-login`;
         const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -67,11 +67,11 @@ function Login() {
 
         // Redirect or perform additional actions upon successful login
         if (role === "admin") {
-          navigate("/pages/admin-dashboard",{ state: { data } });
+          navigate("/pages/admin-dashboard", { state: { data } });
         } else if (role === "developer") {
           navigate("/pages/developer-attendance-form");
         } else if (role === "finance") {
-          navigate("/pages/dashboard/finance" , { state: { data } });
+          navigate("/pages/dashboard/finance", { state: { data } });
         } else if (role === "construction") {
           navigate("/pages/construction-dashboard");
         }
@@ -163,7 +163,7 @@ function Login() {
               <ClipLoader color="#4A90E2" loading={loading} size={50} />
             )}
           </div>
-          
+
 
           <button
             type="submit"
@@ -190,7 +190,7 @@ function Login() {
             Forgot here
           </Link>
         </p>
-         
+
       </div>
     </div>
   );

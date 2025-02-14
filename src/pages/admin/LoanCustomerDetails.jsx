@@ -29,10 +29,12 @@ export default function CustomerDetails({ customer, onBack }) {
                         <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.mobile}</p>
                     </div>
 
-                    {/* Address */}
+                    {/* Current Address */}
                     <div className="bg-gray-50 p-4 rounded-lg">
-                        <label className="block text-sm font-medium text-gray-600">Address</label>
-                        <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.address}</p>
+                        <label className="block text-sm font-medium text-gray-600">Current Address</label>
+                        <p className="mt-1 text-lg text-gray-900 font-semibold">
+                            {customer.currentAddress?.houseFlatNo}, {customer.currentAddress?.streetName}, {customer.currentAddress?.city}, {customer.currentAddress?.state}, {customer.currentAddress?.country} - {customer.currentAddress?.pinCode}
+                        </p>
                     </div>
 
                     {/* Years at Present Address */}
@@ -84,7 +86,9 @@ export default function CustomerDetails({ customer, onBack }) {
                     {/* Office Address */}
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <label className="block text-sm font-medium text-gray-600">Office Address</label>
-                        <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.officeAddress}</p>
+                        <p className="mt-1 text-lg text-gray-900 font-semibold">
+                            {customer.officeAddress?.houseFlatNo}, {customer.officeAddress?.streetName}, {customer.officeAddress?.city}, {customer.officeAddress?.state}, {customer.officeAddress?.country} - {customer.officeAddress?.pinCode}
+                        </p>
                     </div>
 
                     {/* Years Employed */}
@@ -126,7 +130,9 @@ export default function CustomerDetails({ customer, onBack }) {
                     {/* Relative Address */}
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <label className="block text-sm font-medium text-gray-600">Relative Address</label>
-                        <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.relativeAddress}</p>
+                        <p className="mt-1 text-lg text-gray-900 font-semibold">
+                            {customer.relativeAddress?.houseFlatNo}, {customer.relativeAddress?.streetName}, {customer.relativeAddress?.city}, {customer.relativeAddress?.state}, {customer.relativeAddress?.country} - {customer.relativeAddress?.pinCode}
+                        </p>
                     </div>
 
                     {/* Friend Name */}
@@ -144,7 +150,9 @@ export default function CustomerDetails({ customer, onBack }) {
                     {/* Friend Address */}
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <label className="block text-sm font-medium text-gray-600">Friend Address</label>
-                        <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.friendAddress}</p>
+                        <p className="mt-1 text-lg text-gray-900 font-semibold">
+                            {customer.friendAddress?.houseFlatNo}, {customer.friendAddress?.streetName}, {customer.friendAddress?.city}, {customer.friendAddress?.state}, {customer.friendAddress?.country} - {customer.friendAddress?.pinCode}
+                        </p>
                     </div>
                 </div>
 

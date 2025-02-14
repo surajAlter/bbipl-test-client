@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Details from "./Details"; // Import the Details component
 import Upload from "./UploadFiles"; // Import the Upload component
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ContactUsMessages from "./ContactUsMessages";
 import FormRequirementDetails from "./FormRequirementDetails";
 import SiteManagement from "./SitesUpdateManagement";

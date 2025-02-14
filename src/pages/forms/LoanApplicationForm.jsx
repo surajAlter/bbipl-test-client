@@ -14,18 +14,59 @@ export default function LoanApplicationForm() {
         const formObject = {};
 
         formData.forEach((value, key) => {
-            if (key === "yearsPresent" || key === "yearsCity" || key === "loanAmount" || key === "salary" || key === "rentalAmount" || key === "yearsEmployed" || key === "yearsTotalEmployed") {
+            // Skip empty values (optional)
+            if (value === "") return;
+
+            // Convert numeric fields to numbers
+            if (
+                key === "yearsPresent" ||
+                key === "yearsCity" ||
+                key === "loanAmount" ||
+                key === "salary" ||
+                key === "rentalAmount" ||
+                key === "yearsEmployed" ||
+                key === "yearsTotalEmployed"
+            ) {
                 value = isNaN(value) ? value : Number(value);
             }
 
-            formObject[key] = value;
+            // Handle address fields
+            if (key.startsWith("currentAddress")) {
+                formObject.currentAddress = formObject.currentAddress || {};
+                let fieldName = key.replace("currentAddress", "");
+                fieldName = fieldName.charAt(0).toLowerCase() + fieldName.slice(1);
+                formObject.currentAddress[fieldName] = value;
+            } else if (key.startsWith("permanentAddress")) {
+                formObject.permanentAddress = formObject.permanentAddress || {};
+                let fieldName = key.replace("permanentAddress", "");
+                fieldName = fieldName.charAt(0).toLowerCase() + fieldName.slice(1);
+                formObject.permanentAddress[fieldName] = value;
+            } else if (key.startsWith("officeAddress")) {
+                formObject.officeAddress = formObject.officeAddress || {};
+                let fieldName = key.replace("officeAddress", "");
+                fieldName = fieldName.charAt(0).toLowerCase() + fieldName.slice(1);
+                formObject.officeAddress[fieldName] = value;
+            } else if (key.startsWith("relativeAddress")) {
+                formObject.relativeAddress = formObject.relativeAddress || {};
+                let fieldName = key.replace("relativeAddress", "");
+                fieldName = fieldName.charAt(0).toLowerCase() + fieldName.slice(1);
+                formObject.relativeAddress[fieldName] = value;
+            } else if (key.startsWith("friendAddress")) {
+                formObject.friendAddress = formObject.friendAddress || {};
+                let fieldName = key.replace("friendAddress", "");
+                fieldName = fieldName.charAt(0).toLowerCase() + fieldName.slice(1);
+                formObject.friendAddress[fieldName] = value;
+            } else {
+                // Non-address fields
+                formObject[key] = value;
+            }
         });
 
-        // console.log(formObject);
+        console.log(formObject);
 
         // Send form data to the server
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/loan-forms`, formObject, {
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/loan-forms`, formObject, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -96,9 +137,43 @@ export default function LoanApplicationForm() {
 
                         {/* Address Information */}
                         <div className="mt-2 space-y-2">
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Current Address (with Landmark)</label>
-                            <input id="address" name="address" className="w-full p-2 border border-gray-300 rounded-md" required />
+                            <h3 className="text-lg font-medium">Current Address</h3>
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <label htmlFor="houseFlatNo" className="block text-sm font-medium text-gray-700">House/Flat No.</label>
+                                    <input id="houseFlatNo" name="currentAddressHouseFlatNo" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="buildingName" className="block text-sm font-medium text-gray-700">Building Name</label>
+                                    <input id="buildingName" name="currentAddressBuildingName" className="w-full p-2 border border-gray-300 rounded-md" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">Street Name</label>
+                                    <input id="streetName" name="currentAddressStreetName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="area" className="block text-sm font-medium text-gray-700">Area</label>
+                                    <input id="area" name="currentAddressArea" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+                                    <input id="city" name="currentAddressCity" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+                                    <input id="state" name="currentAddressState" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="pinCode" className="block text-sm font-medium text-gray-700">PIN Code</label>
+                                    <input id="pinCode" name="currentAddressPinCode" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="country" className="block text-sm font-medium text-gray-700">Country</label>
+                                    <input id="country" name="currentAddressCountry" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                            </div>
                         </div>
+
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label htmlFor="yearsPresent" className="block text-sm font-medium text-gray-700">Years at Present Address</label>
@@ -151,16 +226,40 @@ export default function LoanApplicationForm() {
                                     }}
                                 >
                                     <div className="space-y-4 mt-2">
-                                        <div className="space-y-2">
-                                            <label htmlFor="permanentAddress" className="block text-sm font-medium text-gray-700">
-                                                Permanent Address
-                                            </label>
-                                            <input
-                                                id="permanentAddress"
-                                                name="permanentAddress"
-                                                className="w-full p-2 border border-gray-300 rounded-md"
-                                                required={showRentalInfo}
-                                            />
+                                        <h3 className="text-lg font-medium">Permanent Address</h3>
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentHouseFlatNo" className="block text-sm font-medium text-gray-700">House/Flat No.</label>
+                                                <input id="permanentHouseFlatNo" name="permanentAddressHouseFlatNo" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentBuildingName" className="block text-sm font-medium text-gray-700">Building Name</label>
+                                                <input id="permanentBuildingName" name="permanentAddressBuildingName" className="w-full p-2 border border-gray-300 rounded-md" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentStreetName" className="block text-sm font-medium text-gray-700">Street Name</label>
+                                                <input id="permanentStreetName" name="permanentAddressStreetName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentArea" className="block text-sm font-medium text-gray-700">Area</label>
+                                                <input id="permanentArea" name="permanentAddressArea" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentCity" className="block text-sm font-medium text-gray-700">City</label>
+                                                <input id="permanentCity" name="permanentAddressCity" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentState" className="block text-sm font-medium text-gray-700">State</label>
+                                                <input id="permanentState" name="permanentAddressState" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentPinCode" className="block text-sm font-medium text-gray-700">PIN Code</label>
+                                                <input id="permanentPinCode" name="permanentAddressPinCode" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label htmlFor="permanentCountry" className="block text-sm font-medium text-gray-700">Country</label>
+                                                <input id="permanentCountry" name="permanentAddressCountry" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -168,8 +267,8 @@ export default function LoanApplicationForm() {
                         </div>
                     </div>
 
+                    {/* Marital Status */}
                     <div className="space-y-4">
-                        {/* Marital Status */}
                         <div className="mt-2 grid gap-4 md:grid-cols-2">
                             <div className="space-y-2">
                                 <label htmlFor="maritalStatus" className="block text-sm font-medium text-gray-700">Marital Status</label>
@@ -243,8 +342,41 @@ export default function LoanApplicationForm() {
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="officeAddress" className="block text-sm font-medium text-gray-700">Office Address</label>
-                            <input id="officeAddress" name="officeAddress" className="w-full p-2 border border-gray-300 rounded-md" />
+                            <h3 className="text-lg font-medium">Office Address</h3>
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <label htmlFor="officeHouseFlatNo" className="block text-sm font-medium text-gray-700">House/Flat No.</label>
+                                    <input id="officeHouseFlatNo" name="officeAddressHouseFlatNo" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeBuildingName" className="block text-sm font-medium text-gray-700">Building Name</label>
+                                    <input id="officeBuildingName" name="officeAddressBuildingName" className="w-full p-2 border border-gray-300 rounded-md" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeStreetName" className="block text-sm font-medium text-gray-700">Street Name</label>
+                                    <input id="officeStreetName" name="officeAddressStreetName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeArea" className="block text-sm font-medium text-gray-700">Area</label>
+                                    <input id="officeArea" name="officeAddressArea" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeCity" className="block text-sm font-medium text-gray-700">City</label>
+                                    <input id="officeCity" name="officeAddressCity" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeState" className="block text-sm font-medium text-gray-700">State</label>
+                                    <input id="officeState" name="officeAddressState" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officePinCode" className="block text-sm font-medium text-gray-700">PIN Code</label>
+                                    <input id="officePinCode" name="officeAddressPinCode" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="officeCountry" className="block text-sm font-medium text-gray-700">Country</label>
+                                    <input id="officeCountry" name="officeAddressCountry" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                            </div>
                         </div>
                         <div className="grid gap-4 md:grid-cols-2 mt-2">
                             <div className="space-y-2">
@@ -290,8 +422,41 @@ export default function LoanApplicationForm() {
                                 </div>
                             </div>
                             <div className="space-y-2 mt-2">
-                                <label htmlFor="relativeAddress" className="block text-sm font-medium text-gray-700">Address</label>
-                                <input id="relativeAddress" name="relativeAddress" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                <h3 className="text-lg font-medium">Relative Address</h3>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeHouseFlatNo" className="block text-sm font-medium text-gray-700">House/Flat No.</label>
+                                        <input id="relativeHouseFlatNo" name="relativeAddressHouseFlatNo" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeBuildingName" className="block text-sm font-medium text-gray-700">Building Name</label>
+                                        <input id="relativeBuildingName" name="relativeAddressBuildingName" className="w-full p-2 border border-gray-300 rounded-md" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeStreetName" className="block text-sm font-medium text-gray-700">Street Name</label>
+                                        <input id="relativeStreetName" name="relativeAddressStreetName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeArea" className="block text-sm font-medium text-gray-700">Area</label>
+                                        <input id="relativeArea" name="relativeAddressArea" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeCity" className="block text-sm font-medium text-gray-700">City</label>
+                                        <input id="relativeCity" name="relativeAddressCity" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeState" className="block text-sm font-medium text-gray-700">State</label>
+                                        <input id="relativeState" name="relativeAddressState" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativePinCode" className="block text-sm font-medium text-gray-700">PIN Code</label>
+                                        <input id="relativePinCode" name="relativeAddressPinCode" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="relativeCountry" className="block text-sm font-medium text-gray-700">Country</label>
+                                        <input id="relativeCountry" name="relativeAddressCountry" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -309,8 +474,41 @@ export default function LoanApplicationForm() {
                                 </div>
                             </div>
                             <div className="space-y-2 mt-2">
-                                <label htmlFor="friendAddress" className="block text-sm font-medium text-gray-700">Address</label>
-                                <input id="friendAddress" name="friendAddress" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                <h3 className="text-lg font-medium">Friend Address</h3>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendHouseFlatNo" className="block text-sm font-medium text-gray-700">House/Flat No.</label>
+                                        <input id="friendHouseFlatNo" name="friendAddressHouseFlatNo" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendBuildingName" className="block text-sm font-medium text-gray-700">Building Name</label>
+                                        <input id="friendBuildingName" name="friendAddressBuildingName" className="w-full p-2 border border-gray-300 rounded-md" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendStreetName" className="block text-sm font-medium text-gray-700">Street Name</label>
+                                        <input id="friendStreetName" name="friendAddressStreetName" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendArea" className="block text-sm font-medium text-gray-700">Area</label>
+                                        <input id="friendArea" name="friendAddressArea" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendCity" className="block text-sm font-medium text-gray-700">City</label>
+                                        <input id="friendCity" name="friendAddressCity" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendState" className="block text-sm font-medium text-gray-700">State</label>
+                                        <input id="friendState" name="friendAddressState" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendPinCode" className="block text-sm font-medium text-gray-700">PIN Code</label>
+                                        <input id="friendPinCode" name="friendAddressPinCode" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="friendCountry" className="block text-sm font-medium text-gray-700">Country</label>
+                                        <input id="friendCountry" name="friendAddressCountry" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
