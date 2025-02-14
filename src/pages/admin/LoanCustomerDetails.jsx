@@ -106,7 +106,9 @@ export default function CustomerDetails({ customer, onBack }) {
                     {/* Bank Details */}
                     <div className="bg-gray-50 p-4 rounded-lg">
                         <label className="block text-sm font-medium text-gray-600">Bank Details</label>
-                        <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.bankDetails}</p>
+                        <p className="mt-1 text-lg text-gray-900 font-semibold">
+                            {customer.bankDetails?.name}, {customer.bankDetails?.branch} - {customer.bankDetails?.acNo}
+                        </p>
                     </div>
 
                     {/* Loan Amount */}
