@@ -39,13 +39,13 @@ const NavBar = () => {
         {/* Logo Section */}
         <div className="flex items-center">
           <Link to="/" className="text-2xl font-bold">
-            <img
-              src="/assets/logo/logo-png.png"
-              alt="Logo"
-              className="h-16 w-auto rounded-md"
-            />
+            <img src="/assets/logo/new-logo.png" alt="Logo" class="object-cover object-center w-20 h-12" />
           </Link>
         </div>
+
+        {/* <div class="flex items-center overflow-hidden"> */}
+        {/* <img src="/assets/logo/new-logo.png" alt="Logo" class="object-cover object-center w-20 h-12" /> */}
+        {/* </div> */}
 
         {/* Navigation Links */}
         <ul
