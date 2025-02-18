@@ -3,27 +3,36 @@ import React from "react";
 export default function CustomerDetails({ customer, onBack }) {
     // Scroll to the top when the component mounts
     React.useEffect(() => {
+        // console.log(customer);
         window.scrollTo({ top: 0, behavior: "smooth" });
     }, []);
 
     // Format the date and time
-    const formatDate = (date) => {
-        date = new Date(date);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        })
-    };
+    const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    const formatDateTime = (dt) => {
+        // dt = new Date(dt);
+        return `${dt.date} ${months[dt.month - 1]}, ${dt.year} at ${dt.hour}:${dt.minute} ${dt.meridian}`;
+    }
+    // const formatDate = (date) => {
+    //     date = new Date(date);
+    //     return date.toLocaleDateString('en-US', {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: 'numeric',
+    //     })
+    // };
 
-    const formatTime = (time) => {
-        time = new Date(time);
-        return time.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        })
-    };
+    // const formatTime = (time) => {
+    //     time = new Date(time);
+    //     return time.toLocaleTimeString('en-US', {
+    //         hour: '2-digit',
+    //         minute: '2-digit',
+    //         second: '2-digit',
+    //     })
+    // };
 
     const printDiv = () => {
         // window.print();
@@ -60,7 +69,7 @@ export default function CustomerDetails({ customer, onBack }) {
                         {/* Date of Birth */}
                         <div className="bg-gray-50 p-4 rounded-lg">
                             <label className="block text-sm font-medium text-gray-600">Date of Birth</label>
-                            <p className="mt-1 text-lg text-gray-900 font-semibold">{customer.dateOfBirth}</p>
+                            <p className="mt-1 text-lg text-gray-900 font-semibold">{`${customer.dateOfBirth.date} ${months[customer.dateOfBirth.month]} ${customer.dateOfBirth.year}`}</p>
                         </div>
 
                         {/* Mobile */}
@@ -198,7 +207,7 @@ export default function CustomerDetails({ customer, onBack }) {
                         </div>
                     </div>
 
-                    <p className="text-right mt-4">{`Date of submission: ${formatDate(customer.createdAt)} at ${formatTime(customer.createdAt)}`}</p>
+                    <p className="text-right mt-4">{`Date of submission: ${formatDateTime(customer.createdAt)}`}</p>
 
                 </div>
 
