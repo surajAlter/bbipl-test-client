@@ -56,7 +56,7 @@ const Footer = () => {
         {/* Contact and Social Media */}
         <div className="pr-8">
           <h2 className="text-lg font-bold">Contact Us</h2>
-          <p className="mt-2 text-wrap">
+          <p className="mt-2 break-words">
             Email: <a href="mailto:support@businessbasketfinance.com" className="hover:text-blue-600 mr-2">support@businessbasketfinance.com</a>
           </p>
           <p className="mt-3">

@@ -58,9 +58,9 @@ export default function FormRequirementDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-100 py-6">
       <div className="mx-auto">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Loan Application Details</h2>
+        <h2 className="max-md:text-center text-3xl font-bold text-gray-800 mb-6">Loan Application Details</h2>
         {selectedCustomer ? (
           // Display LoanCustomerDetails component if a customer is selected
           <LoanCustomerDetails customer={selectedCustomer} onBack={() => setSelectedCustomer(null)} />

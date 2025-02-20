@@ -84,17 +84,13 @@ export default function CustomerDetails({ customer, onBack }) {
     //     printWindow.print();
     // }
 
-    const getPageMargins = () => {
-        return `@page { margin: ${2} ${0.5} ${2} ${1} !important; }`;
-    };
-
     const handleDownloadPDF = useReactToPrint({
         documentTitle: "Customer_Details",
         contentRef: pdfRef,
     });
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center py-6">
             <div className="max-w-fit">
                 <div
                     // id="printableArea" 
