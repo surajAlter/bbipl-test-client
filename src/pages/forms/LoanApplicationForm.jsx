@@ -22,6 +22,7 @@ export default function LoanApplicationForm() {
                 key === "yearsPresent" ||
                 key === "yearsCity" ||
                 key === "loanAmount" ||
+                key === "prevEMI" ||
                 key === "salary" ||
                 key === "rentalAmount" ||
                 key === "yearsEmployed" ||
@@ -135,8 +136,8 @@ export default function LoanApplicationForm() {
                                 <input id="mobile" name="mobile" type="tel" className="w-full p-2 border border-gray-300 rounded-md" required />
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">Telephone (Landline)</label>
-                                <input id="telephone" name="telephone" type="tel" className="w-full p-2 border border-gray-300 rounded-md" />
+                                <label htmlFor="altMobile" className="block text-sm font-medium text-gray-700">Alternate Mobile Number</label>
+                                <input id="altMobile" name="altMobile" type="tel" className="w-full p-2 border border-gray-300 rounded-md" />
                             </div>
                         </div>
 
@@ -383,7 +384,7 @@ export default function LoanApplicationForm() {
                                 </div>
                             </div>
                         </div>
-                        <div className="grid gap-4 md:grid-cols-2 mt-2">
+                        <div className="grid gap-4 md:grid-cols-3 mt-2">
                             <div className="space-y-2">
                                 <label htmlFor="yearsEmployed" className="block text-sm font-medium text-gray-700">Years at Present Job</label>
                                 <input id="yearsEmployed" name="yearsEmployed" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
@@ -391,6 +392,10 @@ export default function LoanApplicationForm() {
                             <div className="space-y-2">
                                 <label htmlFor="yearsTotalEmployed" className="block text-sm font-medium text-gray-700">Years at Total Job Experience</label>
                                 <input id="yearsTotalEmployed" name="yearsTotalEmployed" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
+                            </div>
+                            <div className="space-y-2">
+                                <label htmlFor="salary" className="block text-sm font-medium text-gray-700">Current Salary</label>
+                                <input id="salary" name="salary" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
                             </div>
                         </div>
                     </div>
@@ -415,12 +420,14 @@ export default function LoanApplicationForm() {
                                     {/* <label htmlFor="relativeMobile" className="block text-sm font-medium text-gray-700">A</label> */}
                                     <input id="bankAcNo" name="bankAcNo" className="w-full p-2 border border-gray-300 rounded-md" placeholder='Bank A/c No.' required />
                                 </div>
-                            </div>
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-2 mt-2">
-                            <div className="space-y-2">
-                                <label htmlFor="loanAmount" className="block text-sm font-medium text-gray-700">Amount Required</label>
-                                <input id="loanAmount" name="loanAmount" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                <div className="space-y-2">
+                                    <label htmlFor="loanAmount" className="block text-sm font-medium text-gray-700">Amount Required</label>
+                                    <input id="loanAmount" name="loanAmount" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="prevEMI" className="block text-sm font-medium text-gray-700">Previous EMI</label>
+                                    <input id="prevEMI" name="prevEMI" type="number" className="w-full p-2 border border-gray-300 rounded-md" required />
+                                </div>
                             </div>
                         </div>
                     </div>
