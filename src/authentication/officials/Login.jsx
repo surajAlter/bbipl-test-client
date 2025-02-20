@@ -7,6 +7,7 @@ const serverURL = process.env.REACT_APP_API_URL;
 function Login() {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("admin");
+  const [dept, setDept] = useState("finance");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     empMobileOrId: "", // Single field to accept either empId or empMobile
@@ -25,6 +26,11 @@ function Login() {
   const handleRole = (e) => {
     setRole(e.target.value);
     setFormData((prevData) => ({ ...prevData, empRole: e.target.value }));
+  };
+
+  const handleDept = (e) => {
+    setDept(e.target.value);
+    setFormData((prevData) => ({ ...prevData, empDept: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -136,6 +142,30 @@ function Login() {
               </button>
             </div>
           </div>
+
+          <div className="mb-6">
+            <label
+              htmlFor="dept"
+              className=" block text-sm font-medium text-gray-700 mb-2"
+            >
+              Department
+            </label>
+            <select
+              id="dept"
+              name="empDept"
+              value={dept}
+              onChange={handleDept}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            >
+              {/* <option value="admin">Admin</option> */}
+              {/* <option value="developer">Developer</option> */}
+              {/* <option value="construction">Construction</option> */}
+              <option value="finance">Finance</option>
+            </select>
+          </div>
+
+
           <div className="mb-6">
             <label
               htmlFor="role"
@@ -152,9 +182,9 @@ function Login() {
               required
             >
               <option value="admin">Admin</option>
-              <option value="developer">Developer</option>
-              <option value="construction">Construction</option>
-              <option value="finance">Finance</option>
+              {/* <option value="developer">Developer</option> */}
+              {/* <option value="construction">Construction</option> */}
+              {/* <option value="finance">Finance</option> */}
             </select>
           </div>
 

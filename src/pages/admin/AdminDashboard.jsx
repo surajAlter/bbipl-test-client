@@ -55,7 +55,7 @@ const AdminDashboard = () => {
           Hi! {data?.user?.empName}
         </h1>
       </div>
-      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
         <button
           onClick={() => setActiveComponent("details")}
           className={getButtonClass("details")}
@@ -69,17 +69,17 @@ const AdminDashboard = () => {
         >
           Add Employee
         </button>
-        <button
+        {/* <button
           onClick={() => setActiveComponent("sites-management")}
           className={getButtonClass("sites-management")}
         >
           Add Site
-        </button>
+        </button> */}
         <button
           onClick={() => setActiveComponent("form-requirements")}
           className={getButtonClass("form-requirements")}
         >
-          Requirements Form
+          Loan Application Forms
         </button>
         <button
           onClick={() => setActiveComponent("contactUsMessages")}
@@ -87,12 +87,12 @@ const AdminDashboard = () => {
         >
           Contact Us
         </button>
-        <button
+        {/* <button
           onClick={() => setActiveComponent("showUserAttendance")}
           className={getButtonClass("showUserAttendance")}
         >
           Attendance
-        </button>
+        </button> */}
         <button
           onClick={() => handleLogout()}
           className="w-100 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"

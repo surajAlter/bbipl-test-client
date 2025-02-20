@@ -67,9 +67,36 @@ const Contact = (props) => {
               get back to you as soon as possible.
             </p>
           </div>
-          <div className="lg:flex lg:space-x-8 ">
+          <div className="lg:flex lg:space-x-8">
+            {/* Contact Info Section */}
+            <div className="lg:w-1/3  flex items-start flex-col bg-zinc-200 p-5 rounded-lg">
+              <div className="contact-item">
+                <h3 className="text-2xl my-2 font-semibold">
+                  Contact Info
+                </h3>
+                <p className="text-gray-600">
+                  <span className="font-semibold">Address:</span>{" "}
+                  {props.data
+                    ? props.data.address
+                    : "vibhutikhand, gomti nagar lucknow"}
+                </p>
+              </div>
+              <div className="contact-item">
+                <p className="text-gray-600">
+                  <span className="font-semibold">Phone:</span>{" "}
+                  {props.data ? props.data.phone : "+91 74084 34645"}
+                </p>
+              </div>
+              <div className="contact-item">
+                <p className="text-gray-600">
+                  <span className="font-semibold">Email:</span>{" "}
+                  {props.data ? props.data.email : "support@businessbasketfinance.com"}
+                </p>
+              </div>
+            </div>
+
             {/* Form Section */}
-            <div className="lg:w-2/3 ">
+            <div className="lg:w-2/3 bg-zinc-200 p-5 rounded-lg">
               <form name="contactForm" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Name */}
@@ -160,33 +187,6 @@ const Contact = (props) => {
                   {submitText}
                 </button>
               </form>
-            </div>
-
-            {/* Contact Info Section */}
-            <div className="lg:w-1/3 my-6 flex justify-center items-start flex-col">
-              <div className="contact-item">
-                <h3 className="text-2xl my-2 font-semibold text-gray-800">
-                  Contact Info
-                </h3>
-                <p className="text-gray-600">
-                  <span className="font-semibold">Address:</span>{" "}
-                  {props.data
-                    ? props.data.address
-                    : "vibhutikhand, gomti nagar lucknow"}
-                </p>
-              </div>
-              <div className="contact-item">
-                <p className="text-gray-600">
-                  <span className="font-semibold">Phone:</span>{" "}
-                  {props.data ? props.data.phone : "+91 75036 77953"}
-                </p>
-              </div>
-              <div className="contact-item">
-                <p className="text-gray-600">
-                  <span className="font-semibold">Email:</span>{" "}
-                  {props.data ? props.data.email : "Rakesh@businessbasket.in"}
-                </p>
-              </div>
             </div>
           </div>
         </div>

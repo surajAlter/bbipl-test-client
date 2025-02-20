@@ -76,7 +76,7 @@ const NavBar = () => {
                     className="text-nowrap"
                     to="/loan-application-form"
                   >
-                    Loan
+                    Loan Application
                   </Link>
                 </li>
               </ul>

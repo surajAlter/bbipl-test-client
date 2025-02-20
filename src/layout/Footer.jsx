@@ -31,8 +31,8 @@ const Footer = () => {
           <h2 className="text-lg font-bold">Quick Links</h2>
           <ul className="mt-2 space-y-2">
             <li>
-              <a href="http://mypdfhub.s3-website.ap-south-1.amazonaws.com" className="hover:text-blue-600">
-                MyPDFHub
+              <a href="https://universalmapsolutions.com/" className="hover:text-blue-600">
+                Business Basket Infratech Pvt. Ltd.
               </a>
             </li>
             {/* <li>
@@ -60,7 +60,7 @@ const Footer = () => {
             Email: <a href="mailto:support@businessbasketfinance.com" className="hover:text-blue-600 mr-2">support@businessbasketfinance.com</a>
           </p>
           <p className="mt-3">
-            Phone: <a href="tel:+91 75036 77953" className="hover:text-blue-600 ">+917503677953</a>
+            Phone: <a href="tel:+91 75036 77953" className="hover:text-blue-600 ">+91 74084 34645</a>
           </p>
 
         </div>
@@ -94,7 +94,7 @@ const Footer = () => {
 
       <div className="text-center mt-6 text-sm">
 
-        &copy; {new Date().getFullYear()} Our Company. All rights reserved.
+        &copy; {new Date().getFullYear()} Business Basket Finance Pvt. Ltd. All rights reserved.
       </div>
     </footer>
   );

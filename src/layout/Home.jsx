@@ -9,30 +9,30 @@ const Home = () => {
       <section className="bg-white text-black text-center py-20">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold leading-tight mb-4">
-            Welcome to Business Basket
+            Welcome to Business Basket Finance
           </h1>
           <p className="text-xl mb-6">
             We provide top-notch services to help your business grow. Explore
             our offerings and get in touch with us today!
           </p>
-          <div className="flex justify-center gap-6">
-            {/* <Link
+          {/* <div className="flex justify-center gap-6"> */}
+          {/* <Link
               to="/pages/services"
               className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
             >
               Our Services
             </Link> */}
-            {/* <Link
+          {/* <Link
               to="/pages/contact-us"
               className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300"
             >
               Contact Us
             </Link> */}
-          </div>
+          {/* </div> */}
         </div>
       </section>
 
-      <MainServices/>
+      <MainServices />
 
       {/* About Section */}
       {/* <section className="py-16 bg-gray-100">
