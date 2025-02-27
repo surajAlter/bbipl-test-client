@@ -38,6 +38,14 @@ import OfficialForgotPasswordForConAndFin from "./authentication/officials/Offic
 import ConstructionsDashBoard from "./pages/officials/constructions/ConstructionsDashBoard.jsx";
 import Logout from "./components/admin/Logout.jsx";
 import FinanceDashBoard from "./pages/officials/finance/FinanceDashBoard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+//contexts
+import { UserProvider } from "./context/UserContext";
+
+//Roles
+const ADMIN_CODE = 1;
+
 // const routerFromelements=
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -80,9 +88,20 @@ const router = createBrowserRouter(
 			<Route path="authentication/sign-up" element={<Signup />}></Route>
 			<Route
 				path="pages/admin-dashboard"
-				element={<AdminDashboard />}
+				element={
+					<ProtectedRoute reqRole={ADMIN_CODE}>
+						<AdminDashboard />
+					</ProtectedRoute>
+				}
 			></Route>
-			<Route path="pages/admin" element={<Admin />}></Route>
+			<Route
+				path="pages/admin"
+				element={
+					<ProtectedRoute reqRole={ADMIN_CODE}>
+						<Admin />
+					</ProtectedRoute>
+				}
+			></Route>
 			<Route
 				path="pages/developer-attendance-form"
 				element={<DeveloperAttendanceForm />}
@@ -119,6 +138,8 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<RouterProvider router={router}></RouterProvider>
+		<UserProvider>
+			<RouterProvider router={router}></RouterProvider>
+		</UserProvider>
 	</React.StrictMode>
 );

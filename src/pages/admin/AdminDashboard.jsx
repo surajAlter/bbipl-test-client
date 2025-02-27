@@ -6,11 +6,13 @@ import ContactUsMessages from "./ContactUsMessages";
 import FormRequirementDetails from "./FormRequirementDetails";
 import SiteManagement from "./SitesUpdateManagement";
 import ShowUserAttendance from "./ShowUserAttendance";
+import { useUser } from "../../context/UserContext";
 
 const AdminDashboard = () => {
   const location = useLocation();
   const { data } = location.state || {};
   const [activeComponent, setActiveComponent] = useState("details"); // State to track active component
+  const { logoutUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -36,8 +38,9 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    const allowMe = window.confirm("Are you sure to logOut?");
+    const allowMe = window.confirm("Are you sure to logout?");
     if (allowMe) {
+      logoutUser();
       navigate("/");
     }
   };
@@ -55,7 +58,7 @@ const AdminDashboard = () => {
           Hi! {data?.user?.empName}
         </h1>
       </div>
-      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-2">
         <button
           onClick={() => setActiveComponent("details")}
           className={getButtonClass("details")}

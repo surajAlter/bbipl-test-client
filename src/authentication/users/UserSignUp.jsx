@@ -22,8 +22,9 @@ const UserSignUp = () => {
       return;
     }
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/signup`, formData);
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/signup/user`, formData);
       alert(response.data.message || "Sign up successful!");
+      window.location.href = "/authentication/users/user-login";
     } catch (error) {
       alert(error.response?.data?.message || "Sign up failed!");
     }

@@ -1,142 +1,108 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function Signup() {
+const REACT_APP_SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+const Signup = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    role: 'developer',
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobile: "",
+    password: "",
+    confirmPassword: "",
+    countryCode: "+91",
+    gender: "",
+    dob: "",
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+
+  const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      setPasswordError("Passwords do not match!");
+    } else {
+      setPasswordError("");
+    }
+  }, [formData.password, formData.confirmPassword]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
+    if (passwordError) return;
 
     try {
-      const response = await fetch('https://api.example.com/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create account. Please try again.');
-      }
-
-      const data = await response.json();
-      setSuccess('Account created successfully! Please log in.');
-      setFormData({ email: '', password: '', confirmPassword: '', role: 'developer' });
-    } catch (err) {
-      setError(err.message);
+      await axios.post(`${REACT_APP_SERVER_URL}/api/auth/signup/official`, formData);
+      alert("Signup successful! Please log in.");
+      navigate("/login");
+    } catch (error) {
+      alert(error.response?.data?.message || "Signup failed!");
     }
   };
 
   return (
-    <div className="bg-blue-500 flex items-center justify-center min-h-screen">
-      <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
-        <div className="text-center">
-          <h2 className="text-4xl font-extrabold text-blue-600">Sign Up</h2>
-          <p className="text-gray-600 mt-2">Create your account to get started</p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {success && <p className="text-green-500 text-center">{success}</p>}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-xl">
+        <h2 className="text-2xl font-extrabold text-center text-gray-800 mb-4">Create an Account</h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex space-x-2">
+            <input type="text" name="firstName" placeholder="First Name"
+              className="w-1/2 px-3 py-2 border rounded-lg" onChange={handleChange} required />
+            <input type="text" name="lastName" placeholder="Last Name"
+              className="w-1/2 px-3 py-2 border rounded-lg" onChange={handleChange} required />
           </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter a secure password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Re-enter your password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-              Role
-            </label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            >
-              <option value="developer">Developer</option>
-              <option value="admin">Admin</option>
-              <option value="worker">Worker</option>
+
+          <input type="email" name="email" placeholder="Email"
+            className="w-full px-3 py-2 border rounded-lg" onChange={handleChange} required />
+
+          <div className="flex space-x-2">
+            <select name="countryCode" className="w-1/3 px-3 py-2 border rounded-lg" onChange={handleChange}>
+              <option value="+91">+91 (IN)</option>
             </select>
+            <input type="text" name="mobile" placeholder="Mobile"
+              className="w-2/3 px-3 py-2 border rounded-lg" onChange={handleChange} required />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-400 focus:outline-none transition duration-200"
-          >
-            Create Account
+
+          <input type="password" name="password" placeholder="Password"
+            className="w-full px-3 py-2 border rounded-lg" onChange={handleChange} required />
+
+          <input type="password" name="confirmPassword" placeholder="Confirm Password"
+            className={`w-full px-3 py-2 border rounded-lg ${passwordError ? "border-red-500" : ""}`}
+            onChange={handleChange} required />
+
+          {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
+
+          <div className="flex space-x-2">
+            <select name="gender" className="w-1/2 px-3 py-2 border rounded-lg" onChange={handleChange}>
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <div className="w-1/2">
+              <label className="block text-sm font-medium text-gray-700 mb-1"> Date of Birth</label>
+              <input type="date" name="dob"
+                className="w-full px-3 py-2 border rounded-lg" onChange={handleChange} required />
+            </div>
+          </div>
+
+          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg">
+            Sign Up
           </button>
         </form>
-        <p className="mt-6 text-sm text-gray-600 text-center">
-          Already have an account?{' '}
-          <Link to="/authentication/login" className="text-blue-500 hover:underline">
-            Login
-          </Link>
-        </p>
+
+        <div className="mt-4 text-center">
+          <p className="text-gray-600">Already have an account? <Link to="/login" className="text-blue-500">Log in</Link></p>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Signup;

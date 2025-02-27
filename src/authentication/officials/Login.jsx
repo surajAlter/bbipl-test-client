@@ -1,18 +1,21 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useUser } from "../../context/UserContext";
 
-const serverURL = process.env.REACT_APP_API_URL;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function Login() {
+  const { loginUser } = useUser();
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState("admin");
+  const [role, setRole] = useState(1); // Default role is admin
   const [dept, setDept] = useState("finance");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    empMobileOrId: "", // Single field to accept either empId or empMobile
+    empMobileOrId: "",
     empPassword: "",
-    empRole: "admin",
+    empRole: 1,
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,7 +27,7 @@ function Login() {
   };
 
   const handleRole = (e) => {
-    setRole(e.target.value);
+    setRole(parseInt(e.target.value));
     setFormData((prevData) => ({ ...prevData, empRole: e.target.value }));
   };
 
@@ -42,47 +45,61 @@ function Login() {
 
     // Extract empId or empMobile from the input field
     const { empMobileOrId, empPassword, empRole } = formData;
+
     let dataToSend = {};
 
     if (empMobileOrId) {
       // Check if the input looks like a mobile number or empId
       if (empMobileOrId.length === 10 && /^[0-9]+$/.test(empMobileOrId)) {
         // It's a mobile number, send it as empMobile
-        dataToSend = { empMobile: empMobileOrId, empPassword, empRole };
+        dataToSend = { mobile: empMobileOrId, password: empPassword, role: empRole };
       } else {
         // Otherwise, treat it as empId
-        dataToSend = { empId: empMobileOrId, empPassword, empRole };
+        dataToSend = { email: empMobileOrId, password: empPassword, role: empRole };
       }
 
       try {
-        const url = `${serverURL}/user-login`;
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataToSend),
-        });
+        const url = `${SERVER_URL}/api/auth/login/admin`;
+        const response = await axios.post(url, dataToSend);
 
-        if (!response.ok) {
-          throw new Error("Invalid credentials");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Invalid credentials");
+        // }
 
-        const data = await response.json();
-        setSuccess("Login successful!");
-        console.log(data?.user);
-        alert("Login success.")
+        const data = response.data;
 
         // Redirect or perform additional actions upon successful login
-        if (role === "admin") {
-          navigate("/pages/admin-dashboard", { state: { data } });
-        } else if (role === "developer") {
-          navigate("/pages/developer-attendance-form");
-        } else if (role === "finance") {
-          navigate("/pages/dashboard/finance", { state: { data } });
-        } else if (role === "construction") {
-          navigate("/pages/construction-dashboard");
+        // if (role === "admin" && data.user.role === ADMIN_CODE) {
+        // console.log(data.user);
+        if (data.user.role === 1) {
+          navigate("/pages/admin-dashboard");
         }
-      } catch (err) {
-        setError(err.message);
+        // else if (role === "developer") {
+        //   navigate("/pages/developer-attendance-form");
+        // } 
+        // else if (role === "finance") {
+        //   navigate("/pages/dashboard/finance", { state: { data } });
+        // } 
+        // else if (role === "construction") {
+        //   navigate("/pages/construction-dashboard");
+        // }
+        else {
+          // alert("Unauthorized access!");
+          throw new Error("Unauthorized access!");
+        }
+
+
+        setSuccess("Login successful!");
+
+        // console.log(data?.user);
+        // alert("Login successful!");
+
+        // Save token and role to local storage
+        localStorage.setItem("token", data.token);
+        loginUser(data.user); // Save user data in context
+      } catch (e) {
+        alert(e.response?.data?.message || e.message || "Login failed!");
+        // setError(err.message);
       }
     }
 
@@ -181,7 +198,9 @@ function Login() {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
-              <option value="admin">Admin</option>
+              <option value="1">Admin</option>
+              <option value="2">Team Leader</option>
+              <option value="3">Telecaller</option>
               {/* <option value="developer">Developer</option> */}
               {/* <option value="construction">Construction</option> */}
               {/* <option value="finance">Finance</option> */}

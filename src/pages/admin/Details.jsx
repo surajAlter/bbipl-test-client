@@ -6,7 +6,8 @@ const Admin = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filters, setFilters] = useState({
-    role: "",
+    role: 0,
+    dept: "",
     mobile: "",
     employeeId: "",
   });
@@ -16,10 +17,17 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${serverURL}/api/all-users`);
-        const fetchedData = response?.data?.data || [];
+        const response = await axios.get(`${serverURL}/api/auth/all-users`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const fetchedData = response?.data?.users || [];
         setData(fetchedData); // Set the full data
         setFilteredData(fetchedData); // Initially, display all data
+        console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -32,15 +40,18 @@ const Admin = () => {
   useEffect(() => {
     const applyFilters = () => {
       const filtered = data.filter((item) => {
+        console.log(item.mobile);
         const roleMatch =
-          filters.role === "" ||
-          item.empRole.toLowerCase().includes(filters.role.toLowerCase());
+          filters.role === 0 ||
+          item.role === parseInt(filters.role);
         const mobileMatch =
-          filters.mobile === "" || item.empMobile.includes(filters.mobile);
+          filters.mobile === "" || item.mobile.includes(filters.mobile);
         const idMatch =
-          filters.employeeId === "" || String(item.empId).includes(filters.employeeId);
+          filters.employeeId === "" || String(item._id).includes(filters.id);
+        const deptMatch =
+          filters.dept === "" || item.dept.toLowerCase().includes(filters.dept.toLowerCase());
 
-        return roleMatch && mobileMatch && idMatch;
+        return roleMatch && mobileMatch && idMatch && deptMatch;
       });
       setFilteredData(filtered); // Update the filtered data based on the filters
     };
@@ -52,7 +63,25 @@ const Admin = () => {
     <div className="min-h-screen w-full bg-gray-100">
       <div className="container mx-auto bg-white p-2 rounded-lg shadow-md">
         {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter by Department
+            </label>
+            <select
+              value={filters.dept}
+              onChange={(e) =>
+                setFilters({ ...filters, dept: e.target.value })
+              }
+              className="w-full p-3 border rounded-md text-gray-700"
+            >
+              <option value="">All Departments</option>
+              {/* <option value="developer">Developer</option> */}
+              <option value="finance">Finance</option>
+              {/* <option value="civil">Civil</option> */}
+            </select>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Filter by Role
@@ -65,10 +94,9 @@ const Admin = () => {
               className="w-full p-3 border rounded-md text-gray-700"
             >
               <option value="">All Roles</option>
-              <option value="admin">Admin</option>
-              {/* <option value="developer">Developer</option> */}
-              <option value="finance">Finance</option>
-              {/* <option value="civil">Civil</option> */}
+              <option value="1">Admin</option>
+              <option value="2">Team Leader</option>
+              <option value="3">Telecaller</option>
             </select>
           </div>
 
@@ -118,11 +146,11 @@ const Admin = () => {
             <tbody>
               {filteredData.length > 0 ? (
                 filteredData.map((item) => (
-                  <tr key={item.empId} className="odd:bg-white even:bg-gray-50">
-                    <td className="border border-gray-300 p-3">{item.empId}</td>
-                    <td className="border border-gray-300 p-3">{item.empName}</td>
-                    <td className="border border-gray-300 p-3">{item.empRole}</td>
-                    <td className="border border-gray-300 p-3">{item.empMobile}</td>
+                  <tr key={item._id} className="odd:bg-white even:bg-gray-50">
+                    <td className="border border-gray-300 p-3">{item._id}</td>
+                    <td className="border border-gray-300 p-3">{`${item.firstName} ${item.lastName}`}</td>
+                    <td className="border border-gray-300 p-3">{item.role}</td>
+                    <td className="border border-gray-300 p-3">{item.mobile}</td>
                     <td className="border border-gray-300 p-3">
                       <button
                         onClick={() => setSelectedEmployee(item)}
@@ -155,11 +183,11 @@ const Admin = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Employee Details
             </h2>
-            <p><strong>ID:</strong> {selectedEmployee.empId}</p>
-            <p><strong>Name:</strong> {selectedEmployee.empName}</p>
-            <p><strong>Role:</strong> {selectedEmployee.empRole}</p>
-            <p><strong>Email:</strong> {selectedEmployee.empEmail}</p>
-            <p><strong>Phone:</strong> {selectedEmployee.empMobile}</p>
+            <p><strong>ID:</strong> {selectedEmployee._id}</p>
+            <p><strong>Name:</strong> {`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}</p>
+            <p><strong>Role:</strong> {selectedEmployee.role}</p>
+            <p><strong>Email:</strong> {selectedEmployee.email}</p>
+            <p><strong>Phone:</strong> {selectedEmployee.mobile}</p>
             <div className="mt-4">
               <button
                 onClick={() => setSelectedEmployee(null)}

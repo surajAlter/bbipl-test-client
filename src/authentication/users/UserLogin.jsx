@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const UserLogin = () => {
-  const [userInput, setUserInput] = useState("");
+  const [userinput, setUserinput] = useState("");
   const [password, setPassword] = useState("");
+  const { loginUser } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/login`, {
-        userInput,
+      const response = await axios.post(`${SERVER_URL}/api/auth/login/user`, {
+        userinput,
         password,
       });
-      alert(response.data.message || "Login successful!");
+      // console.log(response.data)
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      loginUser(data.user); // Store user data in context
+      console.log(data.user);
+
+      alert(data.message || "Login successful!");
+      window.location.href = "/";
     } catch (error) {
       alert(error.response?.data?.message || "Login failed!");
+      // console.log(error);
     }
   };
 
@@ -30,10 +42,10 @@ const UserLogin = () => {
           <label className="block text-gray-700 mb-2">Email or Mobile</label>
           <input
             type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
+            value={userinput}
+            onChange={(e) => setUserinput(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
-            placeholder="Enter email or mobile"
+            placeholder="Enter userinput or mobile"
             required
           />
         </div>

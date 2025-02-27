@@ -25,6 +25,9 @@ export default function FormRequirementDetails() {
             page,
             limit,
           },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add your token here
+          },
         });
 
         setFormDetails(response.data.data); // Set the fetched data to state
