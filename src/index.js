@@ -43,9 +43,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 //contexts
 import { UserProvider } from "./context/UserContext";
 
-//Roles
-const ADMIN_CODE = 1;
-
 // const routerFromelements=
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -89,7 +86,7 @@ const router = createBrowserRouter(
 			<Route
 				path="pages/admin-dashboard"
 				element={
-					<ProtectedRoute reqRole={ADMIN_CODE}>
+					<ProtectedRoute requiredRole="admin">
 						<AdminDashboard />
 					</ProtectedRoute>
 				}
@@ -97,7 +94,7 @@ const router = createBrowserRouter(
 			<Route
 				path="pages/admin"
 				element={
-					<ProtectedRoute reqRole={ADMIN_CODE}>
+					<ProtectedRoute requiredRole="admin">
 						<Admin />
 					</ProtectedRoute>
 				}

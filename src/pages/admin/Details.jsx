@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const Admin = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filters, setFilters] = useState({
-    role: 0,
+    role: "",
     dept: "",
     mobile: "",
     employeeId: "",
   });
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${serverURL}/api/auth/all-users`,
+        const response = await axios.get(`${serverURL}/api/auth/all-officials`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        const fetchedData = response?.data?.users || [];
+        const fetchedData = response?.data?.officials || [];
         setData(fetchedData); // Set the full data
         setFilteredData(fetchedData); // Initially, display all data
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
+    setLoading(true);
     fetchData();
+    setLoading(false);
   }, []); // Fetch data only once when the component mounts
 
   // Apply filters in memory with case-insensitive role filtering
   useEffect(() => {
     const applyFilters = () => {
       const filtered = data.filter((item) => {
-        console.log(item.mobile);
+        // console.log(item.mobile);
         const roleMatch =
-          filters.role === 0 ||
-          item.role === parseInt(filters.role);
+          filters.role === "" ||
+          item.role === filters.role;
         const mobileMatch =
           filters.mobile === "" || item.mobile.includes(filters.mobile);
         const idMatch =
@@ -94,9 +98,9 @@ const Admin = () => {
               className="w-full p-3 border rounded-md text-gray-700"
             >
               <option value="">All Roles</option>
-              <option value="1">Admin</option>
-              <option value="2">Team Leader</option>
-              <option value="3">Telecaller</option>
+              <option value="admin">Admin</option>
+              <option value="teamLeader">Team Leader</option>
+              <option value="telecaller">Telecaller</option>
             </select>
           </div>
 
@@ -144,7 +148,11 @@ const Admin = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
+              {loading ? (<div className="flex items-center justify-center mb-4">
+                {loading && (
+                  <ClipLoader color="#4A90E2" loading={loading} size={50} />
+                )}
+              </div>) : (filteredData.length > 0 ? (
                 filteredData.map((item) => (
                   <tr key={item._id} className="odd:bg-white even:bg-gray-50">
                     <td className="border border-gray-300 p-3">{item._id}</td>
@@ -170,7 +178,7 @@ const Admin = () => {
                     No records found.
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>

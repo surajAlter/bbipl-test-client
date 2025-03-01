@@ -8,15 +8,15 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function Login() {
   const { loginUser } = useUser();
-  const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState(1); // Default role is admin
+  const [role, setRole] = useState('admin'); // Default role is admin
   const [dept, setDept] = useState("finance");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    empMobileOrId: "",
+    empId: "",
     empPassword: "",
-    empRole: 1,
+    empRole: '',
   });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
@@ -27,7 +27,7 @@ function Login() {
   };
 
   const handleRole = (e) => {
-    setRole(parseInt(e.target.value));
+    setRole(e.target.value);
     setFormData((prevData) => ({ ...prevData, empRole: e.target.value }));
   };
 
@@ -44,22 +44,26 @@ function Login() {
     setLoading(true);
 
     // Extract empId or empMobile from the input field
-    const { empMobileOrId, empPassword, empRole } = formData;
+    const { empId, empPassword, empRole } = formData;
 
     let dataToSend = {};
 
-    if (empMobileOrId) {
+    if (empId) {
       // Check if the input looks like a mobile number or empId
-      if (empMobileOrId.length === 10 && /^[0-9]+$/.test(empMobileOrId)) {
-        // It's a mobile number, send it as empMobile
-        dataToSend = { mobile: empMobileOrId, password: empPassword, role: empRole };
+      if (empId.startsWith('BB-FIN-')) {
+        dataToSend = { email: empId, password: empPassword, role: empRole };
+      } else if (empId.length === 10 && /^[0-9]+$/.test(empId)) {
+        dataToSend = { mobile: empId, password: empPassword, role: empRole };
+      } else if (empId.includes("@")) {
+        dataToSend = { email: empId, password: empPassword, role: empRole };
       } else {
-        // Otherwise, treat it as empId
-        dataToSend = { email: empMobileOrId, password: empPassword, role: empRole };
+        setError("Invalid input!");
+        setLoading(false);
+        return;
       }
 
       try {
-        const url = `${SERVER_URL}/api/auth/login/admin`;
+        const url = `${SERVER_URL}/api/auth/login/official`;
         const response = await axios.post(url, dataToSend);
 
         // if (!response.ok) {
@@ -71,7 +75,12 @@ function Login() {
         // Redirect or perform additional actions upon successful login
         // if (role === "admin" && data.user.role === ADMIN_CODE) {
         // console.log(data.user);
-        if (data.user.role === 1) {
+        if (data.official.role === 'admin') {
+          // Save token and role to local storage
+          localStorage.setItem("token", data.token);
+          loginUser(data.official); // Save official data in context
+          setSuccess("Login successful!");
+
           navigate("/pages/admin-dashboard");
         }
         // else if (role === "developer") {
@@ -88,18 +97,11 @@ function Login() {
           throw new Error("Unauthorized access!");
         }
 
-
-        setSuccess("Login successful!");
-
         // console.log(data?.user);
         // alert("Login successful!");
-
-        // Save token and role to local storage
-        localStorage.setItem("token", data.token);
-        loginUser(data.user); // Save user data in context
       } catch (e) {
-        alert(e.response?.data?.message || e.message || "Login failed!");
-        // setError(err.message);
+        // alert(e.response?.data?.message || "Login failed!");
+        setError(e.response?.data?.message || e.message || "Login failed!");
       }
     }
 
@@ -117,15 +119,15 @@ function Login() {
           {success && <p className="text-green-500 text-center">{success}</p>}
           <div className="mb-6">
             <label
-              htmlFor="mobileOrId"
+              htmlFor="empId"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Employee/Vendor ID/Mobile No
+              Employee ID / Mobile No / Email
             </label>
             <input
-              id="mobileOrId"
-              name="empMobileOrId" // We only use this field for either empId or empMobile
-              value={formData.empMobileOrId}
+              id="empId"
+              name="empId" // We only use this field for either empId or empMobile
+              value={formData.empId}
               onChange={handleChange}
               placeholder="Enter your employee ID or mobile number"
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -198,9 +200,9 @@ function Login() {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
-              <option value="1">Admin</option>
-              <option value="2">Team Leader</option>
-              <option value="3">Telecaller</option>
+              <option value="admin">Admin</option>
+              <option value="teamLeader">Team Leader</option>
+              <option value="telecaller">Telecaller</option>
               {/* <option value="developer">Developer</option> */}
               {/* <option value="construction">Construction</option> */}
               {/* <option value="finance">Finance</option> */}

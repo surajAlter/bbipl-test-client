@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
-const ProtectedRoute = ({ children, reqRole }) => {
+const ProtectedRoute = ({ children, requiredRole }) => {
     const { user } = useUser();
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const requiredRole = parseInt(reqRole);
 
     useEffect(() => {
         if (user === undefined || user === null) {
