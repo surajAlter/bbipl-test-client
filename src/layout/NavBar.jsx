@@ -35,7 +35,8 @@ const NavBar = () => {
           <li>
             <Link onClick={handleMenuItemClick} to="/" className="hover:text-blue-600 transition">Home</Link>
           </li>
-          <li className="relative">
+
+          {user && (<li className="relative">
             <button onClick={toggleFormsDropdown} className="hover:text-blue-600 transition">Forms</button>
             {isFormsDropdownOpen && (
               <ul className="absolute left-0 mt-2 bg-gray-50 shadow-lg">
@@ -44,10 +45,11 @@ const NavBar = () => {
                 </li>
               </ul>
             )}
-          </li>
-          <li>
+          </li>)}
+
+          {/* <li>
             <Link onClick={handleMenuItemClick} to="/pages/services" className="hover:text-blue-600 transition">Services</Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/pages/contact-us" className="hover:text-blue-600 transition">Contact Us</Link>
           </li>

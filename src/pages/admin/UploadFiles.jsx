@@ -71,7 +71,7 @@ const FileUpload = () => {
             )}
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Employee Details</h2>
-            <div className='md:grid md:grid-cols-4 space-y-5 space-x-4 bg-zinc-200 p-5 rounded-lg text-zinc-600 text-lg'>
+            <div className='md:grid md:grid-cols-4 space-y-5 space-x-4 p-5 rounded-lg text-zinc-600 text-lg'>
                 <label className='col-span-2 mt-5 ml-4'>
                     Employee Name
                     <div className='flex space-x-5 mt-1 w-full'>
@@ -168,12 +168,14 @@ const FileUpload = () => {
             </div>
 
             {/* <div className='w-full text-center'> */}
-            <button
-                onClick={handleUpload}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200 mt-4 w-full"
-            >
-                Submit
-            </button>
+            <div className='w-full text-center'>
+                <button
+                    onClick={handleUpload}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                >
+                    Submit
+                </button>
+            </div>
             {/* </div> */}
         </div>
     );

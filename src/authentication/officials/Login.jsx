@@ -8,13 +8,12 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function Login() {
   const { loginUser } = useUser();
-  const [role, setRole] = useState('admin'); // Default role is admin
-  const [dept, setDept] = useState("finance");
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     empId: "",
-    empPassword: "",
-    empRole: '',
+    password: "",
+    role: 'admin',
+    dept: 'finance'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,18 +21,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleRole = (e) => {
-    setRole(e.target.value);
-    setFormData((prevData) => ({ ...prevData, empRole: e.target.value }));
-  };
-
-  const handleDept = (e) => {
-    setDept(e.target.value);
-    setFormData((prevData) => ({ ...prevData, empDept: e.target.value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -43,24 +31,23 @@ function Login() {
     setSuccess("");
     setLoading(true);
 
-    // Extract empId or empMobile from the input field
-    const { empId, empPassword, empRole } = formData;
-
-    let dataToSend = {};
+    let { empId, ...dataToSend } = formData;
 
     if (empId) {
       // Check if the input looks like a mobile number or empId
       if (empId.startsWith('BB-FIN-')) {
-        dataToSend = { email: empId, password: empPassword, role: empRole };
+        dataToSend["officialId"] = empId;
       } else if (empId.length === 10 && /^[0-9]+$/.test(empId)) {
-        dataToSend = { mobile: empId, password: empPassword, role: empRole };
+        dataToSend["mobile"] = empId;
       } else if (empId.includes("@")) {
-        dataToSend = { email: empId, password: empPassword, role: empRole };
+        dataToSend["email"] = empId;
       } else {
         setError("Invalid input!");
         setLoading(false);
         return;
       }
+
+      // console.log(dataToSend);
 
       try {
         const url = `${SERVER_URL}/api/auth/login/official`;
@@ -145,8 +132,8 @@ function Login() {
               <input
                 type={showPassword ? "text" : "password"} // Toggle between password and text type
                 id="password"
-                name="empPassword"
-                value={formData.empPassword}
+                name="password"
+                value={formData["password"]}
                 onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -171,9 +158,9 @@ function Login() {
             </label>
             <select
               id="dept"
-              name="empDept"
-              value={dept}
-              onChange={handleDept}
+              name="dept"
+              value={formData["dept"]}
+              onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
@@ -194,9 +181,9 @@ function Login() {
             </label>
             <select
               id="role"
-              name="empRole"
-              value={role}
-              onChange={handleRole}
+              name="role"
+              value={formData["role"]}
+              onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
@@ -214,7 +201,6 @@ function Login() {
               <ClipLoader color="#4A90E2" loading={loading} size={50} />
             )}
           </div>
-
 
           <button
             type="submit"
