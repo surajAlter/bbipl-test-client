@@ -126,13 +126,14 @@ const UserSignUp = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2 capitalize">Password</label>
+          <label className="block text-gray-700 mb-2 capitalize">Confirm Password</label>
           <input
             name="confirmPassword"
             value={formData["confirmPassword"]}
             onChange={handleChange}
             className="w-full border border-gray-300 p-2 rounded"
             placeholder={`Confirm Password`}
+            autoComplete="off"
             required
           />
         </div>

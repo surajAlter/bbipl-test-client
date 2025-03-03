@@ -218,7 +218,7 @@ function Login() {
             Sign Up
           </Link>
         </p>*/}
-        <p className="my-2 text-sm text-gray-600 ">
+        {/* <p className="my-2 text-sm text-gray-600 ">
           Didn’t remember password?{" "}
           <Link
             to="/authentication/officials/cons-and-fin-forgot-password"
@@ -226,7 +226,7 @@ function Login() {
           >
             Forgot here
           </Link>
-        </p>
+        </p> */}
 
       </div>
     </div>
