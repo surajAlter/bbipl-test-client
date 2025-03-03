@@ -44,7 +44,7 @@ const UserDashboard = () => {
         <div className="p-1 bg-gray-100">
             <div>
                 <h1 className="text-3xl font-bold text-gray-800 mb-6 ml-14">
-                    Hi! {user?.fname} {user?.lname}
+                    Hi! {user?.firstName} {user?.lastName}
                 </h1>
             </div>
             <div className="grid gap-2 grid-cols-2 md:grid-cols-3 p-2">
