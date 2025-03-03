@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     <div className="p-1 bg-gray-100 min-h-screen">
       <div>
         <h1 className="text-3xl font-bold text-gray-800 mb-6 ml-14">
-          Hi! {data?.user?.empName}
+          Hi! {data?.user?.firstName} {data?.user?.lastName}
         </h1>
       </div>
       <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-2">

@@ -42,7 +42,7 @@ const UserLogin = () => {
       // console.log(data.user);
 
       // alert(data.message || "Login successful!");
-      window.location.href = "/";
+      window.location.href = "/pages/user-dashboard";
     } catch (e) {
       // console.log(e);
       // alert(e.response?.data?.message || "Login failed!");

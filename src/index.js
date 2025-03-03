@@ -20,6 +20,7 @@ import MainServices from "./pages/services/MainService.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import DeveloperAttendanceForm from "./pages/DeveloperAttendanceForm.jsx";
 import FinanceAttendanceForm from "./pages/DevAndFinAttendanceForm.jsx";
+import UserDashboard from "./pages/users/UserDashboard.jsx";
 import Admin from "./pages/admin/Admin.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import RequirementForm from "./pages/forms/Requirements.jsx";
@@ -81,6 +82,10 @@ const router = createBrowserRouter(
 			<Route
 				path="authentication/users/user-forgot-password"
 				element={<UserForgotPassword />}
+			></Route>
+			<Route
+				path="pages/user-dashboard"
+				element={<UserDashboard />}
 			></Route>
 			<Route path="authentication/sign-up" element={<Signup />}></Route>
 			<Route

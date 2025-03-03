@@ -9,7 +9,7 @@ const Footer = () => {
       <div>
         <h2 className="text-lg font-bold "><img src="/assets/logo/new-logo.png"
           alt="logo"
-          srcset=""
+          srcSet=""
           className="h-20 w-32 object-cover m-auto" /></h2>
         <p className="mt-2 text-center">
           Dedicated to providing the best services and solutions to our clients.
