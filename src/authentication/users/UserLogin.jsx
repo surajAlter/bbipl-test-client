@@ -68,7 +68,7 @@ const UserLogin = () => {
             value={userInput}
             onChange={(e) => setUserinput(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
-            placeholder="Enter userInput or mobile"
+            placeholder="Enter Input"
             required
           />
         </div>

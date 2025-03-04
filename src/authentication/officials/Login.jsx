@@ -12,8 +12,8 @@ function Login() {
   const [formData, setFormData] = useState({
     empId: "",
     password: "",
-    role: 'admin',
-    dept: 'finance'
+    role: '',
+    dept: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -109,14 +109,14 @@ function Login() {
               htmlFor="empId"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Employee ID / Mobile No / Email
+              Official ID / Mobile No / Email
             </label>
             <input
               id="empId"
               name="empId" // We only use this field for either empId or empMobile
               value={formData.empId}
               onChange={handleChange}
-              placeholder="Enter your employee ID or mobile number"
+              placeholder="Enter input"
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
@@ -167,6 +167,7 @@ function Login() {
               {/* <option value="admin">Admin</option> */}
               {/* <option value="developer">Developer</option> */}
               {/* <option value="construction">Construction</option> */}
+              <option value="">Select Department</option>
               <option value="finance">Finance</option>
             </select>
           </div>
@@ -187,7 +188,10 @@ function Login() {
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             >
+              <option value="">Select Role</option>
               <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="backendSupport">Backend Support</option>
               <option value="teamLeader">Team Leader</option>
               <option value="telecaller">Telecaller</option>
               {/* <option value="developer">Developer</option> */}
@@ -218,15 +222,15 @@ function Login() {
             Sign Up
           </Link>
         </p>*/}
-        {/* <p className="my-2 text-sm text-gray-600 ">
+        <p className="my-2 text-sm text-gray-600 ">
           Didn’t remember password?{" "}
           <Link
-            to="/authentication/officials/cons-and-fin-forgot-password"
+            to="/authentication/officials/forgot-password"
             className="text-blue-500 hover:underline"
           >
             Forgot here
           </Link>
-        </p> */}
+        </p>
 
       </div>
     </div>

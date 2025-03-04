@@ -10,9 +10,9 @@ const Admin = () => {
     role: "",
     dept: "",
     mobile: "",
-    employeeId: "",
+    officialId: "",
   });
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedOfficial, setSelectedOfficial] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Fetch data from the API when the component mounts
@@ -51,7 +51,7 @@ const Admin = () => {
         const mobileMatch =
           filters.mobile === "" || item.mobile.includes(filters.mobile);
         const idMatch =
-          filters.employeeId === "" || String(item._id).includes(filters.id);
+          filters.officialId === "" || String(item.officialId).includes(filters.officialId);
         const deptMatch =
           filters.dept === "" || item.dept.toLowerCase().includes(filters.dept.toLowerCase());
 
@@ -99,6 +99,8 @@ const Admin = () => {
             >
               <option value="">All Roles</option>
               <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="backendSupport">Backend Support</option>
               <option value="teamLeader">Team Leader</option>
               <option value="telecaller">Telecaller</option>
             </select>
@@ -121,15 +123,15 @@ const Admin = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Filter by Employee ID
+              Filter by Official ID
             </label>
             <input
               type="text"
-              value={filters.employeeId}
+              value={filters.officialId}
               onChange={(e) =>
-                setFilters({ ...filters, employeeId: e.target.value })
+                setFilters({ ...filters, officialId: e.target.value })
               }
-              placeholder="Enter Employee ID"
+              placeholder="Enter Official ID"
               className="w-full p-3 border rounded-md text-gray-700"
             />
           </div>
@@ -140,9 +142,10 @@ const Admin = () => {
           <table className="w-full border-collapse border border-gray-200">
             <thead>
               <tr className="bg-gray-200">
-                <th className="border border-gray-300 p-3 text-left">Employee ID</th>
+                <th className="border border-gray-300 p-3 text-left">Official ID</th>
                 <th className="border border-gray-300 p-3 text-left">Name</th>
                 <th className="border border-gray-300 p-3 text-left">Role</th>
+                <th className="border border-gray-300 p-3 text-left">Department</th>
                 <th className="border border-gray-300 p-3 text-left">Mobile</th>
                 <th className="border border-gray-300 p-3 text-left">Actions</th>
               </tr>
@@ -154,14 +157,15 @@ const Admin = () => {
                 )}
               </div>) : (filteredData.length > 0 ? (
                 filteredData.map((item) => (
-                  <tr key={item._id} className="odd:bg-white even:bg-gray-50">
-                    <td className="border border-gray-300 p-3">{item._id}</td>
+                  <tr key={item.officialId} className="odd:bg-white even:bg-gray-50">
+                    <td className="border border-gray-300 p-3">{item.officialId}</td>
                     <td className="border border-gray-300 p-3">{`${item.firstName} ${item.lastName}`}</td>
                     <td className="border border-gray-300 p-3">{item.role}</td>
+                    <td className="border border-gray-300 p-3">{item.dept}</td>
                     <td className="border border-gray-300 p-3">{item.mobile}</td>
                     <td className="border border-gray-300 p-3">
                       <button
-                        onClick={() => setSelectedEmployee(item)}
+                        onClick={() => setSelectedOfficial(item)}
                         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                       >
                         View Details
@@ -184,21 +188,22 @@ const Admin = () => {
         </div>
       </div>
 
-      {/* Employee Details Modal */}
-      {selectedEmployee && (
+      {/* Official Details Modal */}
+      {selectedOfficial && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Employee Details
+              Official Details
             </h2>
-            <p><strong>ID:</strong> {selectedEmployee._id}</p>
-            <p><strong>Name:</strong> {`${selectedEmployee.firstName} ${selectedEmployee.lastName}`}</p>
-            <p><strong>Role:</strong> {selectedEmployee.role}</p>
-            <p><strong>Email:</strong> {selectedEmployee.email}</p>
-            <p><strong>Phone:</strong> {selectedEmployee.mobile}</p>
+            <p><strong>ID:</strong> {selectedOfficial.officialId}</p>
+            <p><strong>Name:</strong> {`${selectedOfficial.firstName} ${selectedOfficial.lastName}`}</p>
+            <p><strong>Role:</strong> {selectedOfficial.role}</p>
+            <p><strong>Department:</strong> {selectedOfficial.dept}</p>
+            <p><strong>Email:</strong> {selectedOfficial.email}</p>
+            <p><strong>Phone:</strong> {selectedOfficial.countryCode}-{selectedOfficial.mobile}</p>
             <div className="mt-4">
               <button
-                onClick={() => setSelectedEmployee(null)}
+                onClick={() => setSelectedOfficial(null)}
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
                 Close

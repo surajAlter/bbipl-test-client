@@ -22,6 +22,8 @@ const UserForgotPassword = () => {
 
       // alert(response.data.message || "Password reset link sent!");
       setSuccess(response.data?.message || "Password reset link sent!");
+
+      window.location.href = "/authentication/users/user-login";
     } catch (e) {
       // console.log(e);
       setError(e.response?.data?.message || "Failed to reset password!");

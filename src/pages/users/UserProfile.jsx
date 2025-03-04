@@ -48,7 +48,7 @@ const UserProfile = () => {
                             <p className="border-b pb-2"><strong className="text-gray-800">Email:</strong> {user?.email}</p>
                             <p className="border-b pb-2"><strong className="text-gray-800">Mobile:</strong> {user?.countryCode || "N/A"}-{user?.mobile}</p>
                             <p className="border-b pb-2"><strong className="text-gray-800">Gender:</strong> {user?.gender}</p>
-                            <p className="border-b pb-2"><strong className="text-gray-800">Date of Birth:</strong> {user.dob?.date} {new Date(0, user.dob?.month).toLocaleString('default', { month: 'short' })}, {user.dob?.year}</p>
+                            <p className="border-b pb-2"><strong className="text-gray-800">Date of Birth:</strong> {user.dob?.date} {new Date(0, user.dob?.month - 1).toLocaleString('default', { month: 'short' })}, {user.dob?.year}</p>
                         </div>
                     </div>
                 )}

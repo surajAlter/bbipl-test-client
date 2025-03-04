@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import UserProfile from "./UserProfile";
 import FormDetails from "./FormDetails";
 
 const UserDashboard = () => {
     const location = useLocation();
-    const { data } = location.state || {};
     const [activeComponent, setActiveComponent] = useState("profile");
     const { user, logoutUser } = useUser();
     const navigate = useNavigate();
@@ -17,8 +16,14 @@ const UserDashboard = () => {
                 return <UserProfile />;
             case "filled-forms":
                 return <FormDetails />;
-            // case "forms":
-            // return (<p className="text-gray-600">Form component goes here.</p>);
+            case "forms":
+                return (
+                    <div>
+                        {/* <p className="text-gray-600">Form component goes here.</p> */};
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Available forms</h2>
+                        <Link to="/loan-application-form" className="text-blue-500 hover:underline">Loan Application</Link>
+                    </div>
+                );
             default:
                 return <p className="text-gray-600">Please select an option from above.</p>;
         }
@@ -47,19 +52,19 @@ const UserDashboard = () => {
                     Hi! {user?.firstName} {user?.lastName}
                 </h1>
             </div>
-            <div className="grid gap-2 grid-cols-2 md:grid-cols-3 p-2">
+            <div className="grid gap-2 grid-cols-2 md:grid-cols-4 p-2">
                 <button
                     onClick={() => setActiveComponent("profile")}
                     className={getButtonClass("profile")}
                 >
                     User Profile
                 </button>
-                {/* <button
+                <button
                     onClick={() => setActiveComponent("forms")}
                     className={getButtonClass("forms")}
                 >
                     New Form
-                </button> */}
+                </button>
                 <button
                     onClick={() => setActiveComponent("filled-forms")}
                     className={getButtonClass("filled-forms")}

@@ -36,6 +36,7 @@ import UserSignUp from "./authentication/users/UserSignUp.jsx";
 import OfficialForgotPasswordForAdm from "./authentication/officials/OfficialForgotPasswordForAdm.jsx";
 import OfficialForgotPasswordForDev from "./authentication/officials/OfficialForgotPasswordForAdm.jsx";
 import OfficialForgotPasswordForConAndFin from "./authentication/officials/OfficialForgotPasswordForConAndFin.jsx";
+import ForgotPassword from "./authentication/officials/ForgotPassword.jsx";
 import ConstructionsDashBoard from "./pages/officials/constructions/ConstructionsDashBoard.jsx";
 import Logout from "./components/admin/Logout.jsx";
 import FinanceDashBoard from "./pages/officials/finance/FinanceDashBoard.jsx";
@@ -58,6 +59,11 @@ const router = createBrowserRouter(
 			<Route path="authentication/logout" element={<Logout />} />
 
 			<Route
+				path="authentication/officials/forgot-password"
+				element={<ForgotPassword />}
+			></Route>
+
+			{/* <Route
 				path="authentication/officials/cons-and-fin-forgot-password"
 				element={<OfficialForgotPasswordForConAndFin />}
 			></Route>
@@ -68,7 +74,7 @@ const router = createBrowserRouter(
 			<Route
 				path="bbipl-adm-forgot"
 				element={<OfficialForgotPasswordForAdm />}
-			></Route>
+			></Route> */}
 
 			{/* user */}
 			<Route
@@ -87,7 +93,7 @@ const router = createBrowserRouter(
 				path="pages/user-dashboard"
 				element={<UserDashboard />}
 			></Route>
-			<Route path="authentication/sign-up" element={<Signup />}></Route>
+			{/* <Route path="authentication/sign-up" element={<Signup />}></Route> */}
 			<Route
 				path="pages/admin-dashboard"
 				element={
