@@ -1,16 +1,17 @@
+import axios from "axios";
 import { useState } from "react";
 import React from "react";
 
 const initialState = {
   name: "",
-  phone: "",
+  mobile: "",
   email: "",
   message: "",
 };
 
 const Contact = (props) => {
   const [submitText, setSubmitText] = useState("Submit");
-  const [{ name, phone, email, message }, setState] = useState(initialState);
+  const [{ name, mobile, email, message }, setState] = useState(initialState);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,25 +26,19 @@ const Contact = (props) => {
 
     const serverUrl = process.env.REACT_APP_SERVER_URL; // Fetch server URL from .env
 
-    const requestData = { name, phone, email, message };
+    const requestData = { name, mobile, email, message };
 
     try {
-      const response = await fetch(`${serverUrl}/api/contact-us`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+      const response = await axios.post(`${serverUrl}/api/contact-us`, requestData);
 
-      if (response.ok) {
+      if (response.status === 200) {
         console.log("Message sent successfully!");
         clearState();
         setSubmitText("Submitted successfully");
       } else {
-        const phoneNumberLen = phone.length;
+        const phoneNumberLen = mobile.length;
         if (phoneNumberLen !== 10) {
-          alert("Please enter a valid phone Number");
+          alert("Please enter a valid mobile Number");
         } else if (!(email.endsWith("com") || email.endsWith("in"))) {
           alert("Email is not valid.");
         }
@@ -84,7 +79,7 @@ const Contact = (props) => {
               <div className="contact-item">
                 <p className="text-gray-600">
                   <span className="font-semibold">Phone:</span>{" "}
-                  {props.data ? props.data.phone : "+91 74084 34645"}
+                  {props.data ? props.data.mobile : "+91 74084 34645"}
                 </p>
               </div>
               <div className="contact-item">
@@ -122,19 +117,19 @@ const Contact = (props) => {
                   {/* Phone */}
                   <div className="form-group">
                     <label
-                      htmlFor="phone"
+                      htmlFor="mobile"
                       className="block text-gray-600 font-semibold mb-2"
                     >
                       Phone
                     </label>
                     <input
                       type="text"
-                      id="phone"
-                      name="phone"
+                      id="mobile"
+                      name="mobile"
                       className="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                      placeholder="Enter your phone number"
+                      placeholder="Enter your mobile number"
                       required
-                      value={phone}
+                      value={mobile}
                       onChange={handleChange}
                     />
                   </div>

@@ -62,24 +62,29 @@ function Login() {
         // Redirect or perform additional actions upon successful login
         // if (role === "admin" && data.user.role === ADMIN_CODE) {
         // console.log(data.user);
-        if (data.official.role === 'admin') {
+
+        if (data.official.role) {
           // Save token and role to local storage
           localStorage.setItem("token", data.token);
           loginUser(data.official); // Save official data in context
           setSuccess("Login successful!");
 
-          navigate("/pages/admin-dashboard");
-        }
-        // else if (role === "developer") {
-        //   navigate("/pages/developer-attendance-form");
-        // } 
-        // else if (role === "finance") {
-        //   navigate("/pages/dashboard/finance", { state: { data } });
-        // } 
-        // else if (role === "construction") {
-        //   navigate("/pages/construction-dashboard");
-        // }
-        else {
+          const role = data.official.role;
+
+          if (role === 'admin') {
+            navigate("/pages/admin-dashboard");
+          } else if (role === "manager") {
+            navigate("/pages/manager-dashboard");
+          } else if (role === "backendSupport") {
+            navigate("/pages/backend-support-dashboard");
+          } else if (role === "teamLeader") {
+            navigate("/pages/team-leader-dashboard");
+          } else if (role === "telecaller") {
+            navigate("/pages/telecaller-dashboard");
+          } else {
+            throw new Error("This role is not supported yet!");
+          }
+        } else {
           // alert("Unauthorized access!");
           throw new Error("Unauthorized access!");
         }

@@ -1,34 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import queryString from 'query-string';
 import { useUser } from "../../context/UserContext";
-import UserProfile from "./UserProfile";
-import FormDetails from "./FormDetails";
+import OfficialProfile from "./OfficialProfile";
 
 const UserDashboard = () => {
     const location = useLocation();
-    const search = queryString.parse(location.search);
-    console.log(location, "\n\n", search);
-    const selectedComponent = search.selected || "profile";
-    // console.log(location);
-    const [activeComponent, setActiveComponent] = useState(selectedComponent);
+    const [activeComponent, setActiveComponent] = useState("profile");
     const { user, logoutUser } = useUser();
     const navigate = useNavigate();
 
     const renderComponent = () => {
         switch (activeComponent) {
             case "profile":
-                return <UserProfile />;
-            case "filled-forms":
-                return <FormDetails />;
-            case "forms":
-                return (
-                    <div>
-                        {/* <p className="text-gray-600">Form component goes here.</p> */};
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Available forms</h2>
-                        <Link to="/loan-application-form" className="text-blue-500 hover:underline">Loan Application</Link>
-                    </div>
-                );
+                return <OfficialProfile />;
             default:
                 return <p className="text-gray-600">Please select an option from above.</p>;
         }
@@ -62,19 +46,7 @@ const UserDashboard = () => {
                     onClick={() => setActiveComponent("profile")}
                     className={getButtonClass("profile")}
                 >
-                    User Profile
-                </button>
-                <button
-                    onClick={() => setActiveComponent("forms")}
-                    className={getButtonClass("forms")}
-                >
-                    New Form
-                </button>
-                <button
-                    onClick={() => setActiveComponent("filled-forms")}
-                    className={getButtonClass("filled-forms")}
-                >
-                    Filled Forms
+                    Official Profile
                 </button>
                 <button
                     onClick={() => handleLogout()}

@@ -7,16 +7,19 @@ import FormRequirementDetails from "./FormRequirementDetails";
 import SiteManagement from "./SitesUpdateManagement";
 import ShowUserAttendance from "./ShowUserAttendance";
 import { useUser } from "../../context/UserContext";
+import OfficialProfile from "../officials/OfficialProfile";
 
 const AdminDashboard = () => {
   const location = useLocation();
-  const [activeComponent, setActiveComponent] = useState("details"); // State to track active component
+  const [activeComponent, setActiveComponent] = useState("profile"); // State to track active component
   const { user, logoutUser } = useUser();
 
   const navigate = useNavigate();
 
   const renderComponent = () => {
     switch (activeComponent) {
+      case "profile":
+        return <OfficialProfile />;
       case "details":
         return <Details />;
       case "upload":
@@ -57,19 +60,26 @@ const AdminDashboard = () => {
           Hi! {user?.firstName} {user?.lastName}
         </h1>
       </div>
-      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 p-2">
+      <div className="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 p-2">
+        <button
+          onClick={() => setActiveComponent("profile")}
+          className={getButtonClass("profile")}
+        >
+          Profile
+        </button>
+
         <button
           onClick={() => setActiveComponent("details")}
           className={getButtonClass("details")}
         >
-          Show Employee
+          Show Officials
         </button>
 
         <button
           onClick={() => setActiveComponent("upload")}
           className={getButtonClass("upload")}
         >
-          Add Employee
+          Add Official
         </button>
         {/* <button
           onClick={() => setActiveComponent("sites-management")}

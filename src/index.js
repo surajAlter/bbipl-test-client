@@ -40,6 +40,7 @@ import ForgotPassword from "./authentication/officials/ForgotPassword.jsx";
 import ConstructionsDashBoard from "./pages/officials/constructions/ConstructionsDashBoard.jsx";
 import Logout from "./components/admin/Logout.jsx";
 import FinanceDashBoard from "./pages/officials/finance/FinanceDashBoard.jsx";
+import OfficialDashboard from "./pages/officials/OfficialDashboard.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 //contexts
@@ -107,6 +108,38 @@ const router = createBrowserRouter(
 				element={
 					<ProtectedRoute requiredRole="admin">
 						<Admin />
+					</ProtectedRoute>
+				}
+			></Route>
+			<Route
+				path="pages/manager-dashboard"
+				element={
+					<ProtectedRoute requiredRole="manager">
+						<OfficialDashboard />
+					</ProtectedRoute>
+				}
+			></Route>
+			<Route
+				path="pages/backend-support-dashboard"
+				element={
+					<ProtectedRoute requiredRole="backendSupport">
+						<OfficialDashboard />
+					</ProtectedRoute>
+				}
+			></Route>
+			<Route
+				path="pages/team-leader-dashboard"
+				element={
+					<ProtectedRoute requiredRole="teamLeader">
+						<OfficialDashboard />
+					</ProtectedRoute>
+				}
+			></Route>
+			<Route
+				path="pages/telecaller-dashboard"
+				element={
+					<ProtectedRoute requiredRole="telecaller">
+						<OfficialDashboard />
 					</ProtectedRoute>
 				}
 			></Route>

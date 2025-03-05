@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function LoanApplicationForm() {
     const [maritalStatus, setMaritalStatus] = useState("N");
@@ -68,7 +69,7 @@ export default function LoanApplicationForm() {
             }
         });
 
-        console.log(formObject);
+        // console.log(formObject);
 
         // Send form data to the server
         try {
@@ -102,9 +103,16 @@ export default function LoanApplicationForm() {
     };
 
     return (
-        <div className="min-h-screen p-4 bg">
+        <div className="min-h-screen p-4">
+            <div className='fixed'>
+                <Link to={{ pathname: '/pages/user-dashboard', search: "selected=forms" }}>
+                    <button className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600">Back</button>
+                </Link>
+            </div>
             <div className="max-w-3xl mx-auto bg-zinc-200 p-6 rounded-lg shadow-lg">
-                <div className="text-2xl font-bold text-center mb-6">Loan Application Form</div>
+                <div className="text-2xl font-bold text-center mb-6 grid grid-cols-2">
+                    Loan Application Form
+                </div>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Personal Details */}
                     <div>

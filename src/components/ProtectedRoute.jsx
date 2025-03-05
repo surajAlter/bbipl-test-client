@@ -9,6 +9,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 
     useEffect(() => {
         if (user === undefined || user === null) {
+            setIsLoading(false);
             // console.log("Waiting for user data...");
             return; // Prevent unnecessary state update if user is not yet available
         }
