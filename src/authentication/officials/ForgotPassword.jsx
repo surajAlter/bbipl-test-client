@@ -63,13 +63,13 @@ const OfficialForgotPassword = () => {
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 {success && <p className="text-green-500 text-center">{success}</p>}
                 <div className="mb-4">
-                    <label className="block text-gray-700 mb-2">Email/Employee ID</label>
+                    <label className="block text-gray-700 mb-2">Email</label>
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         className="w-full border border-gray-300 p-2 rounded"
-                        placeholder="Enter Input"
+                        placeholder="Enter Email"
                         required
                     />
                 </div>
